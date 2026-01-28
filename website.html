@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to Daily Dose of Moss</title>
+</head>
+<body>
+
+<h1>This is the moss for day <span id="dayCount"></span>:</h1>
+<img id="mossImage" src="Moss Images/0.jpg" alt="Daily Moss Image">
+<p>Thank you for visiting Daily Dose of Moss.</p>
+
+<script>
+  // Array of available moss images
+  const mossImages = Array.from({ length: 201 }, (_, i) => `Moss Images/${i}.jpg`);
+  
+  // Calculate days since January 28, 2026
+  const startDate = new Date(2026, 0, 28); // Month is 0-indexed
+  const today = new Date();
+  const timeDiff = today - startDate;
+  const daysSince = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  
+  document.getElementById('dayCount').textContent = daysSince;
+
+  document.getElementById('mossImage').src = mossImages[daysSince % mossImages.length];
+</script>
+
+</body>
+</html>
