@@ -113,7 +113,7 @@ function updateInfoMessage(offset, todayDayNumber) {
 // Setup event listeners
 function setupEventListeners() {
   prevBtn.addEventListener('click', () => {
-    if (currentDayOffset <= -currentDay) return; // Prevent going before start date
+    if (currentDayOffset < -currentDay) return; // Prevent going before start date
     currentDayOffset--;
     updateDisplay();
     prevBtn.blur();
