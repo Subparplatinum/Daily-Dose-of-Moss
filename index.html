@@ -1,30 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Dose of Moss</title>
 <link rel="stylesheet" href="web.css">
 </head>
 <body>
 
-<h1>Welcome to Daily Dose of Moss!</h1>
-<h2>This is the moss for day <span id="dayCount"></span>:</h2>
-<img id="mossImage" src="Moss Images/0.jpg" alt="Daily Moss Image">
-<p>Thank you for visiting Daily Dose of Moss.</p>
+<div class="container">
+  <header>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+  </header>
 
-<script>
-  // Array of available moss images
-  const mossImages = Array.from({ length: 201 }, (_, i) => `Moss Images/${i}.jpg`);
-  
-  // Calculate days since January 28, 2026
-  const startDate = new Date(2026, 0, 28); // Month is 0-indexed
-  const today = new Date();
-  const timeDiff = today - startDate;
-  const daysSince = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-  
-  document.getElementById('dayCount').textContent = daysSince + 1;
+  <main>
+    <div class="hero">
+      <h1 class="title">Welcome to Daily Dose of Moss!</h1>
+      <p class="subtitle">A little green for your soul every day</p>
+    </div>
 
-  document.getElementById('mossImage').src = mossImages[daysSince % mossImages.length];
-</script>
+    <div class="content">
+      <div class="day-info">
+        <h2>Day <span id="dayCount" class="day-number">0</span></h2>
+        <p class="day-description" id="dayDescription"></p>
+      </div>
+
+      <div class="image-container">
+        <div class="loading-spinner" id="loadingSpinner"></div>
+        <img id="mossImage" class="moss-image" src="Moss Images/0.jpg" alt="Daily Moss Image">
+      </div>
+
+      <div class="controls">
+        <button class="nav-button" id="prevBtn" aria-label="Previous image">← Previous</button>
+        <button class="nav-button reset-btn" id="resetBtn" aria-label="Reset to today">Today</button>
+        <button class="nav-button" id="nextBtn" aria-label="Next image">Next →</button>
+      </div>
+
+      <div class="info-box">
+        <p>Thank you for visiting <strong>Daily Dose of Moss</strong>.</p>
+        <p id="infoMessage" class="info-message"></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Moss Collection: <span id="totalImages">201</span> images</p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
