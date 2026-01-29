@@ -20,7 +20,7 @@ let currentDayOffset = 0; // Offset from today
 document.addEventListener('DOMContentLoaded', () => {
   initializeTheme();
   updateDisplay();
-  setupEventListeners();
+  setupEventListeners(todayDayNumber = getTodayDayNumber());
   preloadImages();
 });
 
@@ -100,7 +100,7 @@ function updateDescription(currentDay, todayDayNumber) {
 }
 
 // Update info message
-function updateInfoMessage(offset, todayDayNumber) {
+function updateInfoMessage(offset) {
   if (offset === 0) {
     infoMessage.textContent = 'Enjoy your free daily dose!';
   } else if (offset > 0) {
@@ -111,9 +111,9 @@ function updateInfoMessage(offset, todayDayNumber) {
 }
 
 // Setup event listeners
-function setupEventListeners() {
+function setupEventListeners(todayDayNumber) {
   prevBtn.addEventListener('click', () => {
-    if (currentDayOffset < -currentDay) return; // Prevent going before start date
+    if (currentDayOffset < -todayDayNumber) return; // Prevent going before start date
     currentDayOffset--;
     updateDisplay();
     prevBtn.blur();
