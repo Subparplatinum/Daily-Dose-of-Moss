@@ -87,39 +87,41 @@ function updateDescription(currentDay, todayDayNumber) {
   const daysUntil = todayDayNumber - currentDay;
 
   if (daysUntil === 0) {
-    dayDescription.textContent = '🌿 Today\'s moss!';
+    dayDescription.textContent = 'Today\'s moss!';
   } else if (daysUntil === 1) {
-    dayDescription.textContent = '📅 Yesterday\'s moss';
+    dayDescription.textContent = 'Yesterday\'s moss';
   } else if (daysUntil > 0) {
-    dayDescription.textContent = `📚 ${daysUntil} days ago`;
+    dayDescription.textContent = `${daysUntil} days ago`;
   } else if (daysUntil === -1) {
-    dayDescription.textContent = '🔮 Tomorrow\'s moss (sneak peek!)';
+    dayDescription.textContent = 'Tomorrow\'s moss (sneak peek!)';
   } else {
-    dayDescription.textContent = `🔮 In ${Math.abs(daysUntil)} days`;
+    dayDescription.textContent = `How did you break into the moss vaults!?`;
   }
 }
 
 // Update info message
 function updateInfoMessage(offset, todayDayNumber) {
   if (offset === 0) {
-    infoMessage.textContent = '✨ Enjoy your daily dose!';
+    infoMessage.textContent = 'Enjoy your free daily dose!';
   } else if (offset > 0) {
-    infoMessage.textContent = `📖 You're browsing the future... 🌱`;
+    infoMessage.textContent = `You're browsing the future...`;
   } else {
-    infoMessage.textContent = `🔙 Revisiting the past...`;
+    infoMessage.textContent = `Reliving the past`;
   }
 }
 
 // Setup event listeners
 function setupEventListeners() {
   prevBtn.addEventListener('click', () => {
-    currentDayOffset++;
+    if (currentDayOffset <= -currentDay) return; // Prevent going before start date
+    currentDayOffset--;
     updateDisplay();
     prevBtn.blur();
   });
 
   nextBtn.addEventListener('click', () => {
-    currentDayOffset--;
+    if (currentDayOffset >= 0) return; // Prevent going into future beyond today
+    currentDayOffset++;
     updateDisplay();
     nextBtn.blur();
   });
