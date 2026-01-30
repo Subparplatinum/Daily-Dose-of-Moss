@@ -29,7 +29,7 @@ body {
   min-height: 100vh;
 }
 
-hrc:link, hrc:visited {
+a:link, a:visited {
   color: rgb(255, 0, 0);
 }
 

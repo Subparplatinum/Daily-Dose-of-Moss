@@ -91,7 +91,7 @@ function renderStreakBadge() {
 
 function updateStreakBadge(count) {
   if (!streakBadgeEl) renderStreakBadge();
-  streakBadgeEl.textContent = `Visited: ${count} day${count === 1 ? '' : 's'}`;
+  streakBadgeEl.textContent = `Moss Viewing Streak: ${count} day${count === 1 ? '' : 's'}`;
 }
 
 // Get today's day number
