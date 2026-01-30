@@ -29,6 +29,10 @@ body {
   min-height: 100vh;
 }
 
+hrc {
+  color: rgb(255, 0, 0);
+}
+
 .container {
   max-width: 900px;
   margin: 0 auto;

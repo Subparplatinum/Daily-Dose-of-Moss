@@ -11,6 +11,8 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const resetBtn = document.getElementById('resetBtn');
 const loadingSpinner = document.getElementById('loadingSpinner');
+// Streak badge element will be created on load
+let streakBadgeEl = null;
 
 // State
 const startDate = new Date(2026, 0, 28); // Month is 0-indexed
@@ -19,10 +21,78 @@ let currentDayOffset = 0; // Offset from today
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   initializeTheme();
+  initializeStreak();
   updateDisplay();
   setupEventListeners(todayDayNumber = getTodayDayNumber());
   preloadImages();
 });
+
+// -------------------------
+// Visit streak tracking
+// -------------------------
+function getLocalDateKey(date) {
+  return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+}
+
+function initializeStreak() {
+  // Create and insert badge
+  renderStreakBadge();
+
+  const storageKey = 'mossVisitStreak';
+  const stored = JSON.parse(localStorage.getItem(storageKey) || 'null');
+  const today = new Date();
+  const todayKey = getLocalDateKey(today);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayKey = getLocalDateKey(yesterday);
+
+  let streak = 0;
+  let lastKey = null;
+
+  if (stored && stored.lastVisit && stored.streak) {
+    lastKey = getLocalDateKey(new Date(stored.lastVisit));
+    streak = Number(stored.streak) || 0;
+  }
+
+  if (lastKey === todayKey) {
+    // already visited today; keep streak
+  } else if (lastKey === yesterdayKey) {
+    // consecutive visit -> increment
+    streak = Math.max(1, streak) + 1;
+  } else {
+    // new streak
+    streak = 1;
+  }
+
+  // Persist new lastVisit (use ISO for precise timestamp) and streak
+  localStorage.setItem(storageKey, JSON.stringify({ lastVisit: today.toISOString(), streak }));
+  updateStreakBadge(streak);
+}
+
+function renderStreakBadge() {
+  streakBadgeEl = document.createElement('div');
+  streakBadgeEl.id = 'mossStreakBadge';
+  streakBadgeEl.setAttribute('aria-live', 'polite');
+  streakBadgeEl.style.position = 'fixed';
+  streakBadgeEl.style.top = '8px';
+  streakBadgeEl.style.left = '8px';
+  streakBadgeEl.style.background = 'rgba(0,0,0,0.6)';
+  streakBadgeEl.style.color = '#fff';
+  streakBadgeEl.style.padding = '6px 10px';
+  streakBadgeEl.style.borderRadius = '6px';
+  streakBadgeEl.style.fontFamily = 'sans-serif';
+  streakBadgeEl.style.fontSize = '14px';
+  streakBadgeEl.style.zIndex = '9999';
+  streakBadgeEl.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+  streakBadgeEl.style.pointerEvents = 'none';
+  streakBadgeEl.textContent = 'Visited: — days';
+  document.body.appendChild(streakBadgeEl);
+}
+
+function updateStreakBadge(count) {
+  if (!streakBadgeEl) renderStreakBadge();
+  streakBadgeEl.textContent = `Visited: ${count} day${count === 1 ? '' : 's'}`;
+}
 
 // Get today's day number
 function getTodayDayNumber() {
@@ -181,30 +251,3 @@ function preloadImages() {
   });
 }
 
-// Add touch swipe support for mobile
-let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener('touchstart', (e) => {
-  touchStartX = e.changedTouches[0].screenX;
-}, false);
-
-document.addEventListener('touchend', (e) => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-}, false);
-
-function handleSwipe() {
-  const swipeThreshold = 50;
-  const diff = touchStartX - touchEndX;
-
-  if (Math.abs(diff) > swipeThreshold) {
-    if (diff > 0) {
-      // Swiped left - next image
-      nextBtn.click();
-    } else {
-      // Swiped right - previous image
-      prevBtn.click();
-    }
-  }
-}
