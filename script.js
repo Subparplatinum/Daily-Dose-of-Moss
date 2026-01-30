@@ -85,7 +85,7 @@ function renderStreakBadge() {
   streakBadgeEl.style.zIndex = '9999';
   streakBadgeEl.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
   streakBadgeEl.style.pointerEvents = 'none';
-  streakBadgeEl.textContent = 'Visited: — days';
+  streakBadgeEl.textContent = 'Moss Viewing Streak: — days';
   document.body.appendChild(streakBadgeEl);
 }
 
