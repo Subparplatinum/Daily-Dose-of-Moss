@@ -64,7 +64,6 @@
   // Hide spinner once mesh is initialized
   function mossLoaded(){
     spinnerDiv.classList.add('hidden');
-    clearInterval(checkMeshReady);
   }
 
   renderer.setAnimationLoop(function animate(time) {
