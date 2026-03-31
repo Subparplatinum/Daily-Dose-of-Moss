@@ -1,0 +1,29 @@
+<style> body {margin: 0;} </style>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.178.0/three.module.js",
+      "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/0.1.10/spark.module.js"
+    }
+  }
+</script>
+<script type="module">
+  import * as THREE from "three";
+  import { SplatMesh } from "@sparkjsdev/spark";
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement)
+
+  const moss = new SplatMesh({url: "./Moss_SH1.ply"});
+  moss.quaternion.set(1, 0, 0, 0);
+  moss.position.set(0, 0, -3);
+  scene.add(moss);
+
+  renderer.setAnimationLoop(function animate(time) {
+    renderer.render(scene, camera);
+    moss.rotation.y += 0.01;
+  });
+</script>
