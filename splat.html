@@ -56,14 +56,13 @@
   moss.quaternion.set(1, 0, 0, 0);
   moss.position.set(0, 0, -3);
 
-  // Rotate 22.5 degrees towards the camera (around X-axis)
-  moss.rotation.x = -1*(Math.PI / 8); // 22.5 degrees in radians
-  //moss.rotation.y = 0;
+  // Rotate 45 degrees towards the camera (around X-axis)
+  moss.rotation.x =  (2*Math.PI)-(Math.PI / 4); // 45 degrees in radians
   scene.add(moss);
   
   // Hide spinner once mesh is initialized
   const checkMeshReady = setInterval(() => {
-    if (moss.isInitialized()) {
+    if (scene.isInitialized()) {
       spinnerDiv.classList.add('hidden');
       clearInterval(checkMeshReady);
     }
