@@ -1,4 +1,32 @@
-<style> body {margin: 0;} </style>
+<style> 
+  body { margin: 0; }
+  
+  #loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+  }
+  
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  #loading-spinner.hidden {
+    display: none;
+  }
+</style>
 <title>3D Moss Viewer</title>
 <script type="importmap">
   {
@@ -16,14 +44,27 @@
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement)
+  document.body.appendChild(renderer.domElement);
+  
+  // Create loading spinner
+  const spinnerDiv = document.createElement('div');
+  spinnerDiv.id = 'loading-spinner';
+  spinnerDiv.innerHTML = '<div class="spinner"></div>';
+  document.body.appendChild(spinnerDiv);
 
   const moss = new SplatMesh({url: "./Moss_SH1.ply"});
   moss.quaternion.set(1, 0, 0, 0);
   moss.position.set(0, 0, -3);
-  moss.rotation.set(0,-45,0);
-  moss.rotation.set({array: [0,-45,0]})
+
+  // Rotate 45 degrees towards the camera (around X-axis)
+  moss.rotation.x = Math.PI / 4; // 45 degrees in radians
+  //moss.rotation.y = 0;
   scene.add(moss);
+  
+  // Wait for mesh to load and remove spinner
+  moss.addEventListener('load', () => {
+    spinnerDiv.classList.add('hidden');
+  });
 
   renderer.setAnimationLoop(function animate(time) {
     renderer.render(scene, camera);
