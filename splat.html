@@ -57,14 +57,16 @@
   moss.position.set(0, 0, -3);
 
   // Rotate 45 degrees towards the camera (around X-axis)
-  moss.rotation.x = Math.PI / 4; // 45 degrees in radians
-  //moss.rotation.y = 0;
+  moss.rotation.x = -1*(Math.PI / 4); // 45 degrees in radians
   scene.add(moss);
   
-  // Wait for mesh to load and remove spinner
-  moss.addEventListener('load', () => {
-    spinnerDiv.classList.add('hidden');
-  });
+  // Hide spinner once mesh is ready
+  const checkMeshReady = setInterval(() => {
+    if (moss.geometry && moss.geometry.attributes.position) {
+      spinnerDiv.classList.add('hidden');
+      clearInterval(checkMeshReady);
+    }
+  }, 100);
 
   renderer.setAnimationLoop(function animate(time) {
     renderer.render(scene, camera);
