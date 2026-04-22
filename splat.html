@@ -83,4 +83,15 @@
     moss.rotation.x = mouseY * 2 * Math.PI;
   });
 
+  window.addEventListener('touchmove', (event) => {
+    const mouseX = event.touches[0].clientX / window.innerWidth;
+    const mouseY = event.touches[0].clientY / window.innerHeight;
+    
+    // Y rotation: -180 to 180 degrees (left to right)
+    moss.rotation.y = mouseX * -2 * Math.PI;
+    
+    // X rotation: -180 to 180 degrees (top to bottom)
+    moss.rotation.x = mouseY * 2 * Math.PI;
+  });
+
 </script>
