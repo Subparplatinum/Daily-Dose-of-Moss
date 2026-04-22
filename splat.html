@@ -26,6 +26,8 @@
   #loading-spinner.hidden {
     display: none;
   }
+
+
 </style>
 <title>3D Moss Viewer</title>
 <script type="importmap">
@@ -35,6 +37,7 @@
       "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/0.1.10/spark.module.js"
     }
   }
+
 </script>
 <script type="module">
   import * as THREE from "three";
@@ -66,6 +69,18 @@
 
   renderer.setAnimationLoop(function animate(time) {
     renderer.render(scene, camera);
-    moss.rotation.y += 0.01;
   });
+
+// New stuff below here
+  window.addEventListener('mousemove', (event) => {
+    const mouseX = event.clientX / window.innerWidth;
+    const mouseY = event.clientY / window.innerHeight;
+    
+    // Y rotation: -180 to 180 degrees (left to right)
+    moss.rotation.y = mouseX * -2 * Math.PI;
+    
+    // X rotation: -180 to 180 degrees (top to bottom)
+    moss.rotation.x = mouseY * 2 * Math.PI;
+  });
+
 </script>
